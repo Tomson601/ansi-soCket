@@ -4,11 +4,13 @@
 #include <string.h>
 #include <sys/socket.h>
 
-void handle_request(int client_sock) {
+
+void handle_request(int client_sock)
+{
     char client_message[2000];
     int read_size;
     // Open HTML file
-    FILE *file = fopen("../static/index.html", "r");
+    FILE *file = fopen("static/index.html", "r");
     if (file == NULL)
     {
         perror("fopen failed");
@@ -32,8 +34,10 @@ void handle_request(int client_sock) {
     fclose(file);
     file_content[file_size] = '\0';
 
-    // Send HTTP headers
+    // Send HTTP and cache headers
     char http_headers[] = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n";
+    char cache_headers[] = "Cache-Control: max-age=315360\r\n";
+    write(client_sock, cache_headers, sizeof(cache_headers) - 1);
     write(client_sock, http_headers, sizeof(http_headers) - 1);
 
     // Send HTML content
