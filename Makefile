@@ -1,4 +1,10 @@
-build:
-	gcc -o server.o src/main.c src/handle_request.c
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -Iinclude
+
+all: server
+
+server: src/main.c src/routes.c
+	$(CC) $(CFLAGS) src/main.c src/routes.c -o server
+
 clean:
-	rm *.o
+	rm -f server
