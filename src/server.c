@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <signal.h>
 
-#include "routes.h"
+#include "user_routes.c"
 
 #define PORT 8080
 #define MAX_CONNECTIONS 100
@@ -20,7 +20,7 @@ void handle_sigint()
     running = 0;
 }
 
-void start_server(char *file_name)
+void start_server()
 {
     signal(SIGINT, handle_sigint);
     int server_fd, new_socket;
@@ -95,7 +95,7 @@ void start_server(char *file_name)
 
             if (strcmp(path, "/home") == 0)
             {
-                handle_home(new_socket, file_name);
+                handle_home(new_socket);
             }
             else if (strcmp(path, "/home/about") == 0)
             {

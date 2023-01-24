@@ -4,29 +4,36 @@
 
 #include "routes.h"
 
-void handle_home(int socket, char* file_path)
+void handle_404(int socket)
+{
+    char response[] = "HTTP/1.1 404 Not Found\nContent-Type: text/html\n\n<h1>404 Page Not Found</h1>";
+    write(socket, response, sizeof(response));
+}
+
+void handle_url(int socket, const char *url, const char *file_path)
 {
     char *buffer;
     size_t file_size;
     FILE *fp;
-    if(file_path==NULL)
+    if (file_path == NULL)
     {
-        char response[] = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n<h1>Welcome to the home page</h1>";
+        char response[1024];
+        sprintf(response, "HTTP/1.1 200 OK\nContent-Type: text/html\n\n<h1>Welcome to %s</h1>", url);
         write(socket, response, sizeof(response));
     }
     else
     {
         fp = fopen(file_path, "r");
-        if (fp == NULL) {
+        if (fp == NULL)
+        {
             handle_404(socket);
             return;
         }
-
         fseek(fp, 0, SEEK_END);
         file_size = ftell(fp);
         rewind(fp);
 
-        buffer = (char *) malloc(file_size);
+        buffer = (char *)malloc(file_size);
         fread(buffer, 1, file_size, fp);
 
         write(socket, buffer, file_size);
@@ -34,17 +41,4 @@ void handle_home(int socket, char* file_path)
         fclose(fp);
         free(buffer);
     }
-}
-
-
-void handle_about(int socket)
-{
-    char response[] = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n<h1>About us</h1>";
-    write(socket, response, sizeof(response));
-}
-
-void handle_404(int socket)
-{
-    char response[] = "HTTP/1.1 404 Not Found\nContent-Type: text/html\n\n<h1>404 Page Not Found</h1>";
-    write(socket, response, sizeof(response));
 }

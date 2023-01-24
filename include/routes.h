@@ -1,10 +1,9 @@
 #ifndef ROUTES_H
 #define ROUTES_H
 
-#define BUFSIZE 1024
+#define BUFSIZE 2048
 
-void handle_home(int socket, char* file_name);
-void handle_about(int socket);
 void handle_404(int socket);
+void handle_url(int socket, const char *path, const char *file_path);
 
 #endif
