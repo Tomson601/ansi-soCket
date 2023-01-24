@@ -6,7 +6,8 @@
 #include <stdlib.h>
 #include <signal.h>
 
-#include "user_routes.c"
+#include "routes.h"
+#include "user_routes.h"
 
 #define PORT 8080
 #define MAX_CONNECTIONS 100

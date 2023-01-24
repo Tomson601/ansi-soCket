@@ -32,10 +32,12 @@ void handle_url(int socket, const char *url, const char *file_path)
         fseek(fp, 0, SEEK_END);
         file_size = ftell(fp);
         rewind(fp);
-
         buffer = (char *)malloc(file_size);
         fread(buffer, 1, file_size, fp);
-
+        // Write HTTP headers
+        char http_headers[] = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n";
+        write(socket, http_headers, sizeof(http_headers) - 1);
+        // Send html content to socket
         write(socket, buffer, file_size);
 
         fclose(fp);
