@@ -1,4 +1,5 @@
-build:
-	gcc -o server.o src/main.c src/handle_request.c
+all:
+	gcc -Wall -Wextra -Werror -Iinclude src/main.c src/server.c src/routes.c -o server
+
 clean:
-	rm *.o
+	rm -f server
