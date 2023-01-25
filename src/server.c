@@ -97,7 +97,13 @@ void start_server()
             char path[BUFSIZE];
             sscanf(buffer, "%s %s", method, path);
 
-            if (strcmp(path, "/home") == 0)
+            if (strcmp(path, "/") == 0)
+            {
+                handle_root(new_socket);
+                printf("\nMethod: %s on: %s\n", method, path);
+                findUserAgent(buffer);
+            }
+            else if (strcmp(path, "/home") == 0)
             {
                 handle_home(new_socket);
                 printf("\nMethod: %s on: %s\n", method, path);
