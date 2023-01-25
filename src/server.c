@@ -8,6 +8,7 @@
 
 #include "routes.h"
 #include "user_routes.h"
+#include "logger.h"
 
 #define PORT 8080
 #define MAX_CONNECTIONS 100
@@ -19,6 +20,8 @@ volatile sig_atomic_t running = 1;
 void handle_sigint()
 {
     running = 0;
+    log_message("\nShutting down...\n");
+    exit(0);
 }
 
 void start_server()
@@ -97,14 +100,21 @@ void start_server()
             if (strcmp(path, "/home") == 0)
             {
                 handle_home(new_socket);
+                printf("\nMethod: %s on: %s\n", method, path);
+                findUserAgent(buffer);
             }
             else if (strcmp(path, "/home/about") == 0)
             {
                 handle_about(new_socket);
+                printf("\nMethod: %s on: %s\n", method, path);
+                findUserAgent(buffer);
             }
             else
             {
                 handle_404(new_socket);
+                printf("\nMethod: %s on: %s\n", method, path);
+                printf("Specified URL does not exist!\n");
+                findUserAgent(buffer);
             }
             close(new_socket);
             exit(0);
@@ -122,6 +132,7 @@ void start_server()
         if (connections[i] > 0)
         {
             close(connections[i]);
+            printf("Closing connection: %i", connections[i]);
         }
     }
 }
