@@ -6,7 +6,7 @@
 
 void handle_404(int socket)
 {
-    char response[] = "HTTP/1.1 404 Not Found\nContent-Type: text/html\n\n<h1>404 Page Not Found</h1>";
+    char response[] = "HTTP/1.1 404 Not Found\nContent-Type: text/html\n\n<h1>404 Page Not Found</h1><style>h1 {text-align: center;}</style>";
     write(socket, response, sizeof(response));
 }
 
